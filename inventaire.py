@@ -22,18 +22,27 @@ def supprimer_produit():
     securite = input("Mot de passe : ")
     
     if securite == mdp:
-        # Vérifier si le produit existe
         produit_trouve = False
         for produit in inventaire:
             if produit[0] == nom:
                 inventaire.remove(produit)
                 print(f"Produit {nom} supprimé avec succès.")
                 produit_trouve = True
-                break  # Sortir de la boucle une fois le produit trouvé
+                break 
         if not produit_trouve:
             print(f"Produit {nom} non trouvé dans l'inventaire.")
     else:
         print("Mot de passe incorrect !")
+
+def ajour_quantite():
+    nom = input("Quelle est le nom du produit sur le quel vous voulez mettre a jour la quantite ? : ")
+
+    produit_trouve = True
+    for produit in inventaire:
+        if produit[0] == nom:
+            produit_trouve = True
+            
+
 
 while True:
     print("\nListe des options : ")
