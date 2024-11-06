@@ -55,3 +55,11 @@ while True:
     else:
         print("Option invalide ! ahah")
 
+
+#A garder
+
+#from random import*
+#for i in range (10):
+    #x=randint(1,6)
+    #print(x)
+
