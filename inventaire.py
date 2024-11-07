@@ -34,14 +34,11 @@ def supprimer_produit():
     else:
         print("Mot de passe incorrect !")
 
-def ajour_quantite():
-    nom = input("Quelle est le nom du produit sur le quel vous voulez mettre a jour la quantite ? : ")
-
-    produit_trouve = True
+def ajour_quantite(nom, quantite):
     for produit in inventaire:
         if produit[0] == nom:
-            produit_trouve = True
-            
+            produit[1] = quantite
+    print(f"Le produit {nom} a bien été mis a jour !")
 
 
 while True:
@@ -49,7 +46,8 @@ while True:
     print("1. Voire l'inventaire.")
     print("2. Ajouter un produit.")
     print("3. Supprimer un produit.")
-    print("4. Quitter.")
+    print("4. Mettre a jour la quantitez d'un produit.")
+    print("5. Quitter.")
     choix = input("Choisissez une option : ")
 
     if choix == "1":
@@ -59,16 +57,12 @@ while True:
     elif choix == "3":
         supprimer_produit()
     elif choix == "4":
+        nom = input("Quelle est le nom du produit sur le quel vous voulez mettre a jour la quantite ? : ")
+        quantite = input("Quelle est la nouvelle quantite ? : ")
+        ajour_quantite(nom, quantite)
+    elif choix == "5":
         print("Vous allez quitter.")
         break
     else:
         print("Option invalide ! ahah")
-
-
-#A garder
-
-#from random import*
-#for i in range (10):
-    #x=randint(1,6)
-    #print(x)
 
