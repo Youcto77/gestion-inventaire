@@ -40,14 +40,20 @@ def ajour_quantite(nom, quantite):
             produit[1] = quantite
     print(f"Le produit {nom} a bien été mis a jour !")
 
+def ajour_prix(nom, prix):
+    for produit in inventaire:
+        if produit[0] == nom:
+            produit[2] = prix
+    print(f"Le prix du produit {nom} a été modifié")
 
 while True:
     print("\nListe des options : ")
     print("1. Voire l'inventaire.")
     print("2. Ajouter un produit.")
     print("3. Supprimer un produit.")
-    print("4. Mettre a jour la quantitez d'un produit.")
-    print("5. Quitter.")
+    print("4. Mettre a jour la quantite d'un produit.")
+    print("5. Mettre a jour le prix d'un produit.")
+    print("6. Quitter.")
     choix = input("Choisissez une option : ")
 
     if choix == "1":
@@ -61,6 +67,10 @@ while True:
         quantite = input("Quelle est la nouvelle quantite ? : ")
         ajour_quantite(nom, quantite)
     elif choix == "5":
+        nom = input("Quelle est le nom du produit sur le quel vous voulez mettre a jour le prix ? : ")
+        prix = input("Quelle est le nouveaux prix : ")
+        ajour_prix(nom, prix)
+    elif choix == "6":
         print("Vous allez quitter.")
         break
     else:
