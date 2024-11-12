@@ -1,5 +1,5 @@
 inventaire = []
-mdp = "InventaireClv77"
+mdp = "1234"
 separation = ("======================================================================")
 
 def ouvrire_inventaire():
@@ -46,6 +46,15 @@ def ajour_prix(nom, prix):
             produit[2] = prix
     print(f"Le prix du produit {nom} a été modifié")
 
+def rupture_stock():
+    for produit in inventaire:
+        try:
+            quantite = int(produit[1])
+            if quantite < 5:
+                print(f"Le produit '{produit[0]}' est en rupture de stock ({quantite} unités restantes).")
+        except ValueError:
+            print("Aucun produit en rupture de stock.")
+        
 while True:
     print("\nListe des options : ")
     print("1. Voire l'inventaire.")
@@ -53,7 +62,8 @@ while True:
     print("3. Supprimer un produit.")
     print("4. Mettre a jour la quantite d'un produit.")
     print("5. Mettre a jour le prix d'un produit.")
-    print("6. Quitter.")
+    print("6. Recherche de produit en rupture de stock.")
+    print("7. Quitter.")
     choix = input("Choisissez une option : ")
 
     if choix == "1":
@@ -71,6 +81,8 @@ while True:
         prix = input("Quelle est le nouveaux prix : ")
         ajour_prix(nom, prix)
     elif choix == "6":
+        rupture_stock()
+    elif choix == "7":
         print("Vous allez quitter.")
         break
     else:
