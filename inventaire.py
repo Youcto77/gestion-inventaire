@@ -86,5 +86,5 @@ while True:
         print("Vous allez quitter.")
         break
     else:
-        print("Option invalide ! ahah")
+        print("Option invalide !")
 
