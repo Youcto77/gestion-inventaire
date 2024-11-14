@@ -1,59 +1,101 @@
-inventaire = []
-mdp = "1234"
-separation = ("======================================================================")
+import json
 
 def ouvrire_inventaire():
-    print(separation)
+
+    with open("bdd.json", "r") as fichier:
+        bdd = json.load(fichier)
+    print("------------------------------------")
+    print()
     print("\nVoici la liste des produits :")
-    for produit in inventaire:
-        print("\n")
-        print(f"{produit[0]} :\n  {produit[1]} en stock\n  {produit[2]}€/u\n")
-    print(separation)
+    print()
+    print("------------------------------------")
+    for produit in bdd:
+        print(f"Produit : {produit['Produit']}")
+        print(f" Quantité : {produit['Quantite']} unités")
+        print(f" Prix : {produit['Prix']} € / unité")
+        print("------------------------------------")
 
 def ajouter_produit():
+    
+    with open('bdd.json', "r") as fichier:
+        bdd = json.load(fichier)
+
     nom = input("Quel est le produit que vous voulez ajouter ? : ")
     quantite = input("Combien de ce produit va-t-il avoir en stock ? : ")
     prix = input("Quel est le prix à l'unité du produit ? : ")
-    inventaire.append([nom, quantite, prix])
-    print(f"Produit ajouté : {nom}, Quantité : {quantite}, Prix : {prix}€ /u")
+    nouveaux_produit = {"Produit": nom, "Quantite": quantite, "Prix": prix}
+    bdd.append(nouveaux_produit)  
+
+    with open("bdd.json", "w") as fichier:
+        json.dump(bdd, fichier, indent=4)
 
 def supprimer_produit():
-    nom = input("Quel est le nom du produit que vous voulez supprimer ? : ")
-    securite = input("Mot de passe : ")
-    
-    if securite == mdp:
-        produit_trouve = False
-        for produit in inventaire:
-            if produit[0] == nom:
-                inventaire.remove(produit)
-                print(f"Produit {nom} supprimé avec succès.")
-                produit_trouve = True
-                break 
-        if not produit_trouve:
-            print(f"Produit {nom} non trouvé dans l'inventaire.")
-    else:
-        print("Mot de passe incorrect !")
 
-def ajour_quantite(nom, quantite):
-    for produit in inventaire:
-        if produit[0] == nom:
-            produit[1] = quantite
-    print(f"Le produit {nom} a bien été mis a jour !")
+    with open("bdd.json", "r") as fichier:
+        bdd = json.load(fichier)
 
-def ajour_prix(nom, prix):
-    for produit in inventaire:
-        if produit[0] == nom:
-            produit[2] = prix
-    print(f"Le prix du produit {nom} a été modifié")
+    nom = input("Quel est le nom du produit que vous voulez supprimer :")
+    for produit in bdd:
+        if produit["Produit"] == nom:
+            bdd.remove(produit)
+            print(f"Le produit {nom} a été supprimé de l'inventaire !")
+        else:
+            print("Une erreur est survenu lors de la suppréssions d'un produit")
+    with open("bdd.json", "w") as fichier:
+        json.dump(bdd, fichier, indent=4)
+
+def ajour_quantite():
+
+    with open("bdd.json", "r") as fichier:
+        bdd = json.load(fichier)
+
+    nom = input("Quel est le produit que vous voullez mettre a jour sa quantite ? : ")
+    quantite = int(input("Quelle est sa nouvelle quantite ? : "))
+
+    for produit in bdd:
+        if produit["Produit"] == nom:
+            produit["Quantite"] = quantite  # Mettre à jour la quantité
+            print(f"La quantité du produit '{nom}' a bien été modifiée à {quantite} unités.")
+        else:
+            print(f"Une erreur s'est produite lors de la maise ajour du produit {nom}")
+
+    with open("bdd.json", "w") as fichier:
+        json.dump(bdd, fichier, indent=4)
+
+def ajour_prix():
+
+    with open("bdd.json", "r") as fichier:
+        bdd = json.load(fichier)
+
+    nom = input("Quel est le produit que vous voullez mettre a jour son prix ? : ")
+    prix = int(input("Quelle est son nouveaux prix ? : "))
+
+    for produit in bdd:
+        if produit["Produit"] == nom:
+            produit["Prix"] = prix
+            print(f"Le produit {nom} a un nouveaux prix de {prix}€.")
+        else:
+            print(f"Une erreur s'est produit lors du changement du prux du produit {nom}")
+
+    with open("bdd.json", "w") as fichier:
+        json.dump(bdd, fichier, indent=4)
+
 
 def rupture_stock():
-    for produit in inventaire:
+
+    with open("bdd.json", "r") as fichier:
+        bdd = json.load(fichier)
+
+    for produit in bdd:
         try:
-            quantite = int(produit[1])
+            quantite = int(produit["Quantite"])
             if quantite < 5:
-                print(f"Le produit '{produit[0]}' est en rupture de stock ({quantite} unités restantes).")
+                print(f"Le produit '{produit["Produit"]}' est en rupture de stock ({quantite} unités restantes).")
         except ValueError:
             print("Aucun produit en rupture de stock.")
+
+        with open("bdd.json", "w") as fichier:
+            json.dump(bdd, fichier, indent=4)
         
 while True:
     print("\nListe des options : ")
@@ -73,13 +115,9 @@ while True:
     elif choix == "3":
         supprimer_produit()
     elif choix == "4":
-        nom = input("Quelle est le nom du produit sur le quel vous voulez mettre a jour la quantite ? : ")
-        quantite = input("Quelle est la nouvelle quantite ? : ")
-        ajour_quantite(nom, quantite)
+        ajour_quantite()
     elif choix == "5":
-        nom = input("Quelle est le nom du produit sur le quel vous voulez mettre a jour le prix ? : ")
-        prix = input("Quelle est le nouveaux prix : ")
-        ajour_prix(nom, prix)
+        ajour_prix()
     elif choix == "6":
         rupture_stock()
     elif choix == "7":
