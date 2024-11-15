@@ -1,7 +1,6 @@
 import json
 import os
 
-
 name_fils = "bdd.json"
 if not os.path.exists(name_fils):
     # Créer le fichier avec un inventaire vide s'il n'existe pas
