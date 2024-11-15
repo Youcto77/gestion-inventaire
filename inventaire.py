@@ -1,6 +1,17 @@
 import json
+import os
 
-def ouvrire_inventaire():
+
+name_fils = "bdd.json"
+if not os.path.exists(name_fils):
+    # Créer le fichier avec un inventaire vide s'il n'existe pas
+    with open(name_fils, "w") as fichier:
+        fichier.write("[]")
+    print("L'inventaire a été créé avec succès !")
+else:
+    print("Le fichier d'inventaire existe déjà.")
+
+def open_inventary():
 
     with open("bdd.json", "r") as fichier:
         bdd = json.load(fichier)
@@ -15,7 +26,7 @@ def ouvrire_inventaire():
         print(f" Prix : {produit['Prix']} € / unité")
         print("------------------------------------")
 
-def ajouter_produit():
+def add_products():
     
     with open('bdd.json', "r") as fichier:
         bdd = json.load(fichier)
@@ -29,7 +40,7 @@ def ajouter_produit():
     with open("bdd.json", "w") as fichier:
         json.dump(bdd, fichier, indent=4)
 
-def supprimer_produit():
+def delete_products():
 
     with open("bdd.json", "r") as fichier:
         bdd = json.load(fichier)
@@ -44,7 +55,7 @@ def supprimer_produit():
     with open("bdd.json", "w") as fichier:
         json.dump(bdd, fichier, indent=4)
 
-def ajour_quantite():
+def updates_quantity():
 
     with open("bdd.json", "r") as fichier:
         bdd = json.load(fichier)
@@ -62,7 +73,7 @@ def ajour_quantite():
     with open("bdd.json", "w") as fichier:
         json.dump(bdd, fichier, indent=4)
 
-def ajour_prix():
+def updates_price():
 
     with open("bdd.json", "r") as fichier:
         bdd = json.load(fichier)
@@ -81,7 +92,7 @@ def ajour_prix():
         json.dump(bdd, fichier, indent=4)
 
 
-def rupture_stock():
+def out_of_stock():
 
     with open("bdd.json", "r") as fichier:
         bdd = json.load(fichier)
@@ -109,17 +120,17 @@ while True:
     choix = input("Choisissez une option : ")
 
     if choix == "1":
-        ouvrire_inventaire()
+        open_inventary()
     elif choix == "2":
-        ajouter_produit()
+        add_products()
     elif choix == "3":
-        supprimer_produit()
+        delete_products()
     elif choix == "4":
-        ajour_quantite()
+        updates_quantity()
     elif choix == "5":
-        ajour_prix()
+        updates_price()
     elif choix == "6":
-        rupture_stock()
+        out_of_stock()
     elif choix == "7":
         print("Vous allez quitter.")
         break

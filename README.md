@@ -22,10 +22,3 @@ The Inventory Management tool allows you to add products with details like `pric
     ```py
     py inventaire.py
 
-## Installation ZIP
-
-1. **Install the .zip file**:
-
-    click on  ![alt text](image.png), next on ![ddd](image-2-1.png)
-
-    Then extract the .zip file to the directory you want. Then redirect to the place where you unzipped it.
