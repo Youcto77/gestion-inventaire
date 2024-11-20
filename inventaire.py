@@ -2,7 +2,10 @@ import json
 import os
 import time
 import sys
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8a149df385a239f33637e78e386f2cc2d5809e27
 
 name_fils = "bdd.json"
 if not os.path.exists(name_fils):
@@ -12,6 +15,7 @@ if not os.path.exists(name_fils):
 else:
     print("Le fichier d'inventaire existe déjà.")
 
+<<<<<<< HEAD
 name_fils_stock = "stock.json"
 if not os.path.exists(name_fils_stock):
     with open(name_fils_stock, "w") as f:
@@ -21,6 +25,8 @@ else:
     print("Le fichier de stock existe deja !")
 
 
+=======
+>>>>>>> 8a149df385a239f33637e78e386f2cc2d5809e27
 def open_inventary():
     try: 
         with open("bdd.json", "r") as fichier:
@@ -173,6 +179,7 @@ def rename_products():
         with open("bdd.json", "w") as fichier:
             json.dump(bdd, fichier, indent=4)
 
+<<<<<<< HEAD
 def about_stock():
     with open("stock.json", "r") as fichier:
         stock = json.load(fichier)
@@ -186,6 +193,8 @@ def about_stock():
 
     with open("stock.json", "w") as fichier:
             json.dump(stock, fichier, indent=4)
+=======
+>>>>>>> 8a149df385a239f33637e78e386f2cc2d5809e27
 
 while True:
     print("\nListe des options : ")
@@ -197,8 +206,12 @@ while True:
     print("6. Recherche de produit en rupture de stock.")
     print("7. Supprimer l'intégralité de l'inventaire.")
     print("8. Modifier le nom d'un produit.")
+<<<<<<< HEAD
     print("9. Informations sur le stock.")
     print("10. Quitter.")
+=======
+    print("9. Quitter.")
+>>>>>>> 8a149df385a239f33637e78e386f2cc2d5809e27
     choix = input("Choisissez une option : ")
 
     if choix == "1":
@@ -218,8 +231,11 @@ while True:
     elif choix == "8":
         rename_products()
     elif choix == "9":
+<<<<<<< HEAD
         about_stock()
     elif choix == "10":
+=======
+>>>>>>> 8a149df385a239f33637e78e386f2cc2d5809e27
         print("Vous allez quitter.")
         break
     else:
