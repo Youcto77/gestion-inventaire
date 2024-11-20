@@ -3,7 +3,6 @@ import os
 import time
 import sys
 
-
 name_fils = "bdd.json"
 if not os.path.exists(name_fils):
     with open(name_fils, "w") as fichier:
@@ -20,23 +19,25 @@ if not os.path.exists(name_fils_stock):
 else:
     print("Le fichier de stock existe deja !")
 
-
 def open_inventary():
     try: 
-        with open("bdd.json", "r") as fichier:
-            bdd = json.load(fichier)
-        print("------------------------------------")
-        print()
-        print("\nVoici la liste des produits :")
-        print()
-        print("------------------------------------")
-        for produit in bdd:
-            print(f"Produit : {produit['Produit']}")
-            print(f" Quantité : {produit['Quantite']} unités")
-            print(f" Prix : {produit['Prix']} € / unité")
+        if os.path.exists(name_fils) and os.path.getsize(name_fils) == 0:
+            print("Le fichier est vide.")
+        else:
+            with open("bdd.json", "r") as fichier:
+                bdd = json.load(fichier)
             print("------------------------------------")
+            print()
+            print("\nVoici la liste des produits :")
+            print()
+            print("------------------------------------")
+            for produit in bdd:
+                print(f"Produit : {produit['Produit']}")
+                print(f" Quantité : {produit['Quantite']} unités")
+                print(f" Prix : {produit['Prix']} € / unité")
+                print("------------------------------------")      
     except:
-        print("ERROR")
+        print("Erreur lors du chargement de l'inventaire.")
 
 def add_products():
     
@@ -120,17 +121,26 @@ def out_of_stock():
     with open("bdd.json", "r") as fichier:
         bdd = json.load(fichier)
 
-    for produit in bdd:
-        try:
-            quantite = int(produit["Quantite"])
-            if quantite < 5:
-                print(f"Le produit '{produit["Produit"]}' est en rupture de stock ({quantite} unités restantes).")
-        except ValueError:
-            print("Aucun produit en rupture de stock.")
+    with open("stock.json", "r") as f:
+        stock_data = json.load(f) 
 
-        with open("bdd.json", "w") as fichier:
-            json.dump(bdd, fichier, indent=4)
-        
+    for produit in bdd:
+        for stock_item in stock_data:
+            try:
+                quantite = int(produit["Quantite"])
+                number_stock = int(stock_item["Rupture de stock a partir"])
+            
+                if quantite < number_stock:
+                    print(f"Le produit '{produit['Produit']}' est en rupture de stock ({quantite} unités restantes).")
+            except ValueError:
+                print("Valeur incorrecte trouvée, vérifiez les données dans les fichiers JSON.")
+
+    with open("bdd.json", "w") as fichier:
+        json.dump(bdd, fichier, indent=4)
+
+    with open("stock.json", "w") as f:
+        json.dump(stock_data, f, indent=4)
+   
 def delete_all_inventary():
     with open("bdd.json", "r") as fichier:
         bdd = json.load(fichier)
@@ -173,19 +183,64 @@ def rename_products():
         with open("bdd.json", "w") as fichier:
             json.dump(bdd, fichier, indent=4)
 
-def about_stock():
+def limite_rupture():
     with open("stock.json", "r") as fichier:
         stock = json.load(fichier)
 
-        msg = input("A partir de combien de produits, les produits seront en rupture de stock ? : ")
-        try:
-            msg = {"Rupture de stock a partir": msg}
-            stock.append(msg)
-        except:
-            print("Une erreur est survenu lors de l'ajout du gérage de stock !")
+        for info in stock:
+            print("\n")
+            print(f"Les produits seront en rupture de stock a partir de : {info["Rupture de stock a partir"]} exemplaire.")
 
     with open("stock.json", "w") as fichier:
+        json.dump(stock, fichier, indent=4)
+
+def modif_rupture():
+    # Charger le fichier JSON
+    with open("stock.json", "r") as fichier:
+        stock = json.load(fichier)
+
+    # Demander la valeur seuil pour la rupture de stock
+    nombre = int(input("À partir de combien de produits en réserve sera-t-il considéré en rupture de stock ? : "))
+
+    # Vérifier si le fichier contient déjà une entrée
+    if stock:  # Si le fichier contient au moins une entrée
+        try:
+            stock[0]["Rupture de stock a partir"] = nombre
+            print(f"La valeur de 'Rupture de stock a partir' a été mise à jour à {nombre}.")
+        except:
+            print("Une erreur s'est produite lors de la mise à jour.")
+    else:  # Si le fichier est vide
+        try:
+            stock = [{"Rupture de stock a partir": nombre}]
+            print(f"Aucune valeur existante. Une nouvelle valeur de 'Rupture de stock a partir' a été créée : {nombre}.")
+        except:
+            print("Une erreur s'est produite lors de la création d'une nouvelle valeur.")
+
+    # Sauvegarder les modifications dans le fichier JSON
+    try:
+        with open("stock.json", "w") as fichier:
             json.dump(stock, fichier, indent=4)
+            print("Les modifications ont été sauvegardées avec succès.")
+    except:
+        print("Une erreur s'est produite lors de la sauvegarde des modifications.")
+
+def about_stock():
+        
+        while True:
+            print("\nVoici les options pour gerer les parametre du stock :")
+            print("1. Limite rupture de stock.")
+            print("2. Modifier la limitie rupture de sotck.")
+            print("3. Retour en arrière.")
+            choix = input("Choisissez une option : ")
+
+            if choix == "1":
+                limite_rupture()
+            elif choix == "2":
+                modif_rupture()
+            elif choix == "3":
+                break
+            else:
+                print("ERREUR")
 
 while True:
     print("\nListe des options : ")
